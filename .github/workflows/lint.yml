@@ -2,11 +2,23 @@ name: Ansible Playbook Lint
 on: [push, pull_request]
 
 jobs:
-  build:
+  ansible-lint:
     runs-on: ubuntu-latest
+
+    env:
+      PYTHON_VERSION: 3.7
 
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Ansible Lint
+        run: |
+          python -m pip install --upgrade ansible ansible-lint
+
       - name: Run ansible-lint
-        uses: ansible-community/ansible-lint-action@v6.0.2
+        run: ansible-lint --version && ansible-lint opensearch.yml
