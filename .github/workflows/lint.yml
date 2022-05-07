@@ -5,13 +5,13 @@ jobs:
   ansible-lint:
     runs-on: ubuntu-latest
     env:
-      PYTHON_VERSION: 3.7
+      ANSIBLE_VERSION: 4
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Run ansible-lint
-        run: docker run --rm -v $(pwd):/data cytopia/ansible-lint *.yml
+        run: docker run --rm -v $(pwd):/data cytopia/ansible-lint:${{ env.ANSIBLE_VERSION }} *.yml
 
       #- name: Set up Python ${{ env.PYTHON_VERSION }}
       #  uses: actions/setup-python@v2
