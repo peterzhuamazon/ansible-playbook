@@ -4,21 +4,28 @@ on: [push, pull_request]
 jobs:
   ansible-lint:
     runs-on: ubuntu-latest
-
     env:
       PYTHON_VERSION: 3.7
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install Ansible Lint
-        run: |
-          python -m pip install --upgrade ansible ansible-lint
-
       - name: Run ansible-lint
-        run: ansible-lint --version && ansible-lint opensearch.yml
+        # replace `main` with any valid ref, or tags like `v6`
+        uses: ansible-community/ansible-lint-action@v6.0.2
+        # optional:
+        with:
+          path: "./"  # <-- only one value is allowed
+
+
+      #- name: Set up Python ${{ env.PYTHON_VERSION }}
+      #  uses: actions/setup-python@v2
+      #  with:
+      #    python-version: ${{ env.PYTHON_VERSION }}
+
+      #- name: Install Ansible Lint
+      #  run: |
+      #    python -m pip install --upgrade ansible ansible-lint
+
+      #- name: Run ansible-lint
+      #  run: ansible-lint --version && ansible-lint opensearch.yml
